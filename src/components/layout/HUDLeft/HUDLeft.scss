@@ -1,0 +1,100 @@
+@import "scss/mixins.scss";
+@import "scss/variables.scss";
+
+.HUDLeft {
+  &-equipmentContainer {
+    padding: 8px 8px 0 8px;
+    display: grid;
+    grid-gap: 12px;
+    grid-template-areas:
+      ". head shoulders"
+      "handsLeft chest handsRight"
+      ". waist ."
+      "heldMain legs heldSecondary"
+      ". feet .";
+  }
+
+  &-equipment {
+    @include container;
+    width: 50px;
+    height: 50px;
+    border-radius: 4px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &Label {
+      position: absolute;
+      background: #fff;
+      padding: 2px 4px;
+      font-weight: bold;
+      font-size: 12px;
+      top: 0px;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    &.small {
+      width: 30px;
+      height: 30px;
+      font-size: 60%;
+    }
+
+    &.large {
+      width: 60px;
+      height: 60px;
+    }
+
+    &.horizontal {
+      width: 50px;
+      height: 10px;
+      font-size: 60%;
+    }
+  }
+
+  > .Bar,
+  > .ItemContainer {
+    margin-top: 16px;
+  }
+
+  &-name {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 18px;
+    border-bottom: 1px solid;
+    margin-bottom: 12px;
+  }
+
+  $pieces: head, shoulders, chest, handsLeft, handsRight, legs, heldMain,
+    heldSecondary, waist, feet;
+
+  @each $piece in $pieces {
+    &-#{$piece} {
+      grid-area: #{$piece};
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  &-shoulders {
+    align-items: flex-end;
+    justify-content: flex-start;
+    margin-left: -8px;
+  }
+
+  &-handsLeft {
+    align-items: flex-end;
+    justify-content: flex-end;
+    margin-right: -8px;
+  }
+
+  &-handsRight {
+    align-items: flex-end;
+    justify-content: flex-start;
+    margin-left: -8px;
+  }
+}

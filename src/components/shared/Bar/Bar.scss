@@ -1,0 +1,35 @@
+@import "scss/mixins.scss";
+@import "scss/variables.scss";
+
+.Bar {
+  height: 30px;
+  border: 1px solid #333;
+  border-radius: 4px;
+  padding: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ccc;
+  font-weight: bold;
+  position: relative;
+
+  &-inner {
+    width: 100%;
+    margin-right: auto;
+    height: 100%;
+    background: #333;
+    border-radius: 4px;
+    transition: width 0.3s ease-in-out;
+  }
+
+  &-label {
+    position: absolute;
+    left: 5px;
+    border-radius: 4px;
+    padding: 0 4px;
+  }
+
+  &-currentValue {
+    position: absolute;
+  }
+}

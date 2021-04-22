@@ -1,0 +1,29 @@
+@import "scss/mixins.scss";
+@import "scss/variables.scss";
+
+.HUD {
+  display: flex;
+  height: calc(100vh - 16px);
+  padding: 8px;
+  width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+
+  &-left {
+    @include container;
+    margin-right: 4px;
+    flex: 1;
+  }
+
+  &-central {
+    @include container;
+    margin: 0 4px;
+    flex: 2;
+  }
+
+  &-right {
+    @include container;
+    margin-left: 4px;
+    flex: 1;
+  }
+}

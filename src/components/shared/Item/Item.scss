@@ -1,0 +1,40 @@
+@import "scss/mixins.scss";
+@import "scss/variables.scss";
+
+.Item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  height: 100%;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: help;
+
+  &-modifier {
+    margin-bottom: 10px;
+    font-size: 10px;
+  }
+
+  &-quantity {
+    bottom: 2px;
+    right: 2px;
+    position: absolute;
+    font-size: 10px;
+  }
+
+  &Details {
+    font-size: 12px;
+    white-space: nowrap;
+    min-width: 200px;
+    min-height: 250px;
+
+    &-name {
+      display: flex;
+      justify-content: space-between;
+      font-size: 16px;
+      border-bottom: 1px solid;
+      padding: 4px 0;
+    }
+  }
+}

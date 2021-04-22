@@ -1,0 +1,45 @@
+.SkillsList {
+  &-title {
+    display: flex;
+    justify-content: flex-start;
+    padding-left: 4px;
+    font-weight: bold;
+    font-size: 14px;
+    border-bottom: 1px solid;
+    margin: 12px 0;
+  }
+}
+
+.Skill {
+  cursor: help;
+  margin-bottom: 4px;
+
+  &-name {
+    overflow: hidden;
+    max-width: 270px;
+    float: left;
+
+    &:after {
+      content: "..................................................................................";
+    }
+  }
+
+  &-value {
+    margin-left: 2px;
+  }
+
+  &Details {
+    font-size: 12px;
+    white-space: nowrap;
+    min-width: 200px;
+    min-height: 50px;
+
+    &-name {
+      display: flex;
+      justify-content: space-between;
+      font-size: 16px;
+      border-bottom: 1px solid;
+      padding: 4px 0;
+    }
+  }
+}
