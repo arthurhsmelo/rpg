@@ -1,0 +1,86 @@
+@import "scss/mixins.scss";
+@import "scss/variables.scss";
+
+.Map {
+  @include container;
+  padding: 10px;
+  height: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(25px, 1fr));
+  grid-auto-rows: 25px;
+  display: grid;
+  position: relative;
+
+  &-position {
+    @include flex-center;
+    border: 1px solid #8b877e;
+    margin: 0 -1px -1px 0;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.1s ease-in-out;
+
+    &--thirdVisible {
+      opacity: 0.2;
+    }
+
+    &--halfVisible {
+      opacity: 0.5;
+    }
+
+    &--visible {
+      opacity: 1;
+      font-weight: bold;
+      border-color: #333;
+      border-width: 2px;
+    }
+
+    &--withElement {
+      cursor: help;
+    }
+  }
+
+  &-wall {
+    border-style: double;
+    border-width: 3px;
+
+    &#{&}--left {
+      border-left: 0;
+    }
+
+    &#{&}--right {
+      border-right: 0;
+    }
+
+    &#{&}--top {
+      border-top: 0;
+    }
+
+    &#{&}--bottom {
+      border-bottom: 0;
+    }
+  }
+
+  &-label {
+    position: absolute;
+    background: #eaeaea;
+    padding: 2px 4px;
+    font-weight: bold;
+    font-size: 12px;
+    top: 0px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  &ElementsDetails {
+    font-size: 12px;
+    white-space: nowrap;
+    min-width: 200px;
+
+    &-name {
+      display: flex;
+      justify-content: space-between;
+      font-size: 16px;
+      border-bottom: 1px solid;
+      padding: 4px 0;
+    }
+  }
+}

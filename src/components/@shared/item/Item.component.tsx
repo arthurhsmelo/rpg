@@ -1,6 +1,6 @@
 import React from "react";
 import { ItemWithQty } from "types/Item";
-import Tooltip from "../Tooltip/Tooltip.component";
+import Tooltip from "../tooltip/Tooltip.component";
 import "./Item.scss";
 
 const ItemDetails: React.FC<ItemWithQty> = ({

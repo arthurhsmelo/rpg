@@ -1,4 +1,4 @@
-import Tooltip from "components/shared/Tooltip/Tooltip.component";
+import Tooltip from "components/@shared/tooltip/Tooltip.component";
 import React from "react";
 import "./SkillsList.scss";
 
@@ -30,7 +30,7 @@ const SkillsList: React.FC<SkillsListProps> = ({ skills }) => {
         <span>Skills</span>
       </div>
       {skills.map((skill) => (
-        <Tooltip content={<SkillDetails {...skill} />}>
+        <Tooltip content={<SkillDetails {...skill} />} key={skill.name}>
           <div className="Skill">
             <span className="Skill-name">{skill.name}</span>
             <span className="Skill-value">{skill.value}</span>

@@ -1,7 +1,6 @@
-export interface Item {
-  name: string;
-  label: string;
-  description: string;
+import { WithName } from "./Util";
+
+export interface Item extends WithName {
   modifier?: string;
 }
 

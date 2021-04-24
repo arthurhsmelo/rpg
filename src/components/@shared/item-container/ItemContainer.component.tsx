@@ -1,6 +1,6 @@
 import React from "react";
 import { ItemWithQty } from "types/Item";
-import Item from "components/shared/Item/Item.component";
+import Item from "components/@shared/item/Item.component";
 import { useMemo } from "react";
 import "./ItemContainer.scss";
 

@@ -2,4 +2,9 @@
 @import "scss/variables.scss";
 
 .HUDCentral {
+  height: 100%;
+
+  &-map {
+    height: 70%;
+  }
 }

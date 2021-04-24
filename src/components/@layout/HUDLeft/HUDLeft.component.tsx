@@ -1,8 +1,8 @@
 import cn from "classnames";
-import Bar from "components/shared/Bar/Bar.component";
-import ItemContainer from "components/shared/ItemContainer/ItemContainer.component";
-import Tooltip from "components/shared/Tooltip/Tooltip.component";
-import SkillsList from "components/SkillsList/SkillsList.component";
+import Bar from "components/@shared/bar/Bar.component";
+import ItemContainer from "components/@shared/item-container/ItemContainer.component";
+import Tooltip from "components/@shared/tooltip/Tooltip.component";
+import SkillsList from "components/skills-list/SkillsList.component";
 import React from "react";
 import "./HUDLeft.scss";
 
