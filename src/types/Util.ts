@@ -3,3 +3,7 @@ export interface WithName {
   label: string;
   description: string;
 }
+
+export interface WithQuantity {
+  quantity: number;
+}

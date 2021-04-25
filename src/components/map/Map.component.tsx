@@ -6,7 +6,7 @@ import { useMemo } from "react";
 import { useState } from "react";
 import { useCallback } from "react";
 import { Player } from "types/Player";
-import { WithName } from "types/Util";
+import { WithName, WithQuantity } from "types/Util";
 import "./Map.scss";
 import {
   MAP_CENTER,
@@ -24,26 +24,30 @@ import {
 
 export interface MapProps {
   label: string;
-  player: Player;
+  players: Player[];
 }
 
 const ElementsDetails: React.FC<{
   elements: MapCoordinateElement[];
   player?: Player;
 }> = ({ elements, player }) => {
-  const elementsWithQtd: (WithName & { quantity: number })[] = useMemo(() => {
-    const elementsWithQtd = new Map();
+  const elementsWithQtd: (WithName & WithQuantity)[] = useMemo(() => {
+    const uniqueWithQtd: { [key: string]: WithName & WithQuantity } = {};
     elements.forEach((el) => {
-      let element = elementsWithQtd.get(el.name);
-      let quantity = element?.quantity ?? 1;
-      if (element) {
-        quantity++;
+      if (!uniqueWithQtd[el.label]) {
+        uniqueWithQtd[el.label] = {
+          ...el,
+          quantity: 1,
+        };
+      } else {
+        uniqueWithQtd[el.label] = {
+          ...el,
+          quantity: uniqueWithQtd[el.label].quantity + 1,
+        };
       }
-      element = { ...el, quantity };
-      elementsWithQtd.set(el.name, { ...element, quantity });
     });
-    const els = Array.from(elementsWithQtd.values());
-    return player ? [{ ...player, quantity: 1 }, ...els] : els;
+    const arr = Object.values(uniqueWithQtd);
+    return player ? [{ ...player, quantity: 1 }, ...arr] : arr;
   }, [elements, player]);
 
   return (
@@ -71,7 +75,8 @@ const ElementsDetails: React.FC<{
   );
 };
 
-const _Map: React.FC<MapProps> = ({ label, player }) => {
+const _Map: React.FC<MapProps> = ({ label, players }) => {
+  const player = players[0];
   const [playerPosition, setPlayerPosition] = useState(MAP_CENTER);
   const [moveTimeout, setMoveTimeout] = useState<number>(-1);
   const [movingDirection, setMovingDirection] = useState<string>();
@@ -175,7 +180,7 @@ const _Map: React.FC<MapProps> = ({ label, player }) => {
         [MapCoordinateElementType.ENEMY]: "!",
         [MapCoordinateElementType.NPC]: "*",
       };
-      const zipElements = (elements: MapCoordinateElement[]) => {
+      const getUniqueElementsType = (elements: MapCoordinateElement[]) => {
         const types: MapCoordinateElementType[] = [];
         const unique: MapCoordinateElement[] = [];
         elements.forEach((el) => {
@@ -204,7 +209,7 @@ const _Map: React.FC<MapProps> = ({ label, player }) => {
             }
           >
             {isEqualCoord(coord, playerPosition) && "@"}
-            {zipElements(coord.elements).map(
+            {getUniqueElementsType(coord.elements).map(
               (element) => elementSymbolMap[element.type]
             )}
           </Tooltip>

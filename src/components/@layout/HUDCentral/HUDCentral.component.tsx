@@ -8,7 +8,10 @@ const HUDCentral: React.FC = () => {
       <div className="HUDCentral-map">
         <Map
           label="Mapa"
-          player={{ name: "sorTuzin", label: "sT", description: "Você" }}
+          players={[
+            { name: "sorTuzin", label: "sT", description: "Você" },
+            { name: "Gustavo", label: "lut", description: "Colega de equipe" },
+          ]}
         />
       </div>
     </div>
