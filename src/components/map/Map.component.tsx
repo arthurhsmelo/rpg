@@ -1,4 +1,6 @@
 import classNames from "classnames";
+import Button from "components/@shared/button/Button.component";
+import Modal from "components/@shared/modal/Modal.component";
 import Tooltip from "components/@shared/tooltip/Tooltip.component";
 import useKeyPress from "hooks/useKeyPress";
 import React, { useEffect } from "react";
@@ -6,7 +8,6 @@ import { useMemo } from "react";
 import { useState } from "react";
 import { useCallback } from "react";
 import { Player } from "types/Player";
-import { WithName, WithQuantity } from "types/Util";
 import "./Map.scss";
 import {
   MAP_CENTER,
@@ -20,63 +21,63 @@ import {
   getCoordinate,
   MapCoordinateElementType,
   MapCoordinateElement,
+  getUniqueElements,
 } from "./Map.utils";
 
 export interface MapProps {
   label: string;
-  players: Player[];
+  player: Player;
+  onPlayerMove?: (newPosition: MapCoordinate) => void;
 }
 
-const ElementsDetails: React.FC<{
+export const ElementsDetails: React.FC<{
   elements: MapCoordinateElement[];
   player?: Player;
-}> = ({ elements, player }) => {
-  const elementsWithQtd: (WithName & WithQuantity)[] = useMemo(() => {
-    const uniqueWithQtd: { [key: string]: WithName & WithQuantity } = {};
-    elements.forEach((el) => {
-      if (!uniqueWithQtd[el.label]) {
-        uniqueWithQtd[el.label] = {
-          ...el,
-          quantity: 1,
-        };
-      } else {
-        uniqueWithQtd[el.label] = {
-          ...el,
-          quantity: uniqueWithQtd[el.label].quantity + 1,
-        };
-      }
-    });
-    const arr = Object.values(uniqueWithQtd);
-    return player ? [{ ...player, quantity: 1 }, ...arr] : arr;
+  light?: boolean;
+}> = ({ elements, player, light = true }) => {
+  const [encounterOpen, setEncounterModal] = useState(false);
+  const elementsWithQtd = useMemo(() => {
+    const uniqueElements = getUniqueElements(elements);
+    return player
+      ? [{ ...player, quantity: 1 }, ...uniqueElements]
+      : uniqueElements;
   }, [elements, player]);
 
   return (
     <div className="MapElementsDetails">
-      {elementsWithQtd.map(({ name, label, description, quantity }, index) => (
+      {elementsWithQtd.map((element, index) => (
         <div className="MapElementsDetails" key={index}>
           <div className="MapElementsDetails-name">
             <span>
               <b>
-                {name}({label})
+                {element.name}({element.label})
               </b>
             </span>
           </div>
           <p>
-            <b>Descrição: </b> {description}
+            <b>Descrição: </b> {element.description}
           </p>
-          {quantity > 1 && (
+          {element.quantity > 1 && (
             <p>
-              <b>Quantidade: </b> {quantity}
+              <b>Quantidade: </b> {element.quantity}
             </p>
+          )}
+          {(element as MapCoordinateElement).actionQuote && (
+            <Button
+              light={light}
+              onClick={() => setEncounterModal(!encounterOpen)}
+            >
+              {(element as MapCoordinateElement).actionQuote}
+            </Button>
           )}
         </div>
       ))}
+      {encounterOpen && <Modal>Modal</Modal>}
     </div>
   );
 };
 
-const _Map: React.FC<MapProps> = ({ label, players }) => {
-  const player = players[0];
+const Map: React.FC<MapProps> = ({ label, player, onPlayerMove }) => {
   const [playerPosition, setPlayerPosition] = useState(MAP_CENTER);
   const [moveTimeout, setMoveTimeout] = useState<number>(-1);
   const [movingDirection, setMovingDirection] = useState<string>();
@@ -85,6 +86,11 @@ const _Map: React.FC<MapProps> = ({ label, players }) => {
   const arrowDown: boolean = useKeyPress("ArrowDown");
   const arrowLeft: boolean = useKeyPress("ArrowLeft");
   const arrowRight: boolean = useKeyPress("ArrowRight");
+
+  useEffect(() => {
+    onPlayerMove?.(playerPosition);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [playerPosition.x, playerPosition.y]);
 
   const move = useCallback(
     (direction) => {
@@ -119,8 +125,9 @@ const _Map: React.FC<MapProps> = ({ label, players }) => {
         ) {
           x++;
         }
+        const coordinate = getCoordinate(x, y) as MapCoordinate;
 
-        return getCoordinate(x, y) as MapCoordinate;
+        return coordinate;
       });
 
       setMovingDirection(direction);
@@ -254,4 +261,4 @@ const _Map: React.FC<MapProps> = ({ label, players }) => {
   );
 };
 
-export default _Map;
+export default Map;

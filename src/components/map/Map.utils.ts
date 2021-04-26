@@ -1,13 +1,21 @@
-import { WithName } from "types/Util";
+import { WithName, WithQuantity } from "types/Util";
 
 export enum MapCoordinateElementType {
   ENEMY,
   NPC,
 }
-export interface Enemy extends WithName {
+export interface TimelineQuote {
+  singular: string;
+  plural: string;
+}
+export interface BaseMapCoordinateElement {
+  timelineQuote: TimelineQuote;
+  actionQuote: string;
+}
+export interface Enemy extends WithName, BaseMapCoordinateElement {
   type: MapCoordinateElementType.ENEMY;
 }
-export interface NPC extends WithName {
+export interface NPC extends WithName, BaseMapCoordinateElement {
   type: MapCoordinateElementType.NPC;
 }
 export type MapCoordinateElement = Enemy | NPC;
@@ -45,26 +53,41 @@ export const COORDINATES: MapCoordinate[] = MAP_POSITIONS.map((index) => {
     index === 259 ||
     index === 238 ||
     index === 217;
-  const elements =
-    index === 20
+  const elements: MapCoordinateElement[] =
+    index === 303
       ? [
           {
             name: "Arthur",
             label: "Ar",
             description: "Guarda da cidade",
             type: MapCoordinateElementType.NPC,
+            actionQuote: "Interagir",
+            timelineQuote: {
+              singular: "guarda",
+              plural: "guardas",
+            },
           },
           {
             name: "Javali",
             label: "Ja",
             description: "Animal selvagem",
             type: MapCoordinateElementType.ENEMY,
+            actionQuote: "Atacar",
+            timelineQuote: {
+              singular: "animal selvagem",
+              plural: "animais selvagens",
+            },
           },
           {
             name: "Javali",
             label: "Ja",
             description: "Animal selvagem",
             type: MapCoordinateElementType.ENEMY,
+            actionQuote: "Atacar",
+            timelineQuote: {
+              singular: "animal selvagem",
+              plural: "animais selvagens",
+            },
           },
         ]
       : [];
@@ -97,4 +120,23 @@ export const hasWallToThe = (direction: string, coord: MapCoordinate) => {
   const coordinate = getCoordinate(coord.x + xOffset, coord.y + yOffset);
 
   return coordinate?.isWall ?? false;
+};
+export const getUniqueElements = (elements: MapCoordinateElement[]) => {
+  const uniqueWithQtd: {
+    [key: string]: MapCoordinateElement & WithQuantity;
+  } = {};
+  elements.forEach((el) => {
+    if (!uniqueWithQtd[el.label]) {
+      uniqueWithQtd[el.label] = {
+        ...el,
+        quantity: 1,
+      };
+    } else {
+      uniqueWithQtd[el.label] = {
+        ...el,
+        quantity: uniqueWithQtd[el.label].quantity + 1,
+      };
+    }
+  });
+  return Object.values(uniqueWithQtd);
 };

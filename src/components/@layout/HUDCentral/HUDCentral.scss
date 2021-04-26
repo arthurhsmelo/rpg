@@ -5,6 +5,43 @@
   height: 100%;
 
   &-map {
-    height: 70%;
+    height: 72%;
+  }
+
+  &-events {
+    height: 28%;
+    display: flex;
+  }
+
+  &-timeline {
+    width: 60%;
+    height: 100%;
+    position: relative;
+    overflow: auto;
+    border-right: 1px solid $border-color;
+    margin-top: 8px;
+    padding: 0 8px;
+
+    p {
+      margin-top: 0;
+    }
+
+    &Fade {
+      background-color: #eaeaea;
+      background: linear-gradient(transparent, #eaeaea);
+      height: 100%;
+      position: absolute;
+      width: 100%;
+      left: 0;
+    }
+  }
+
+  &-availableActions {
+    padding: 8px;
+    margin: 8px 0;
+    width: 40%;
+    height: calc(100% - 16px);
+    overflow: auto;
+    color: #333;
   }
 }

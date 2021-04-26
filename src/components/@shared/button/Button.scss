@@ -1,0 +1,26 @@
+.Button {
+  width: 100%;
+  border-radius: 4px;
+  margin: 8px 0;
+  padding: 8px;
+  background: transparent;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid #333;
+  color: #333;
+  font-family: "Courier New", Courier, monospace;
+  transition: box-shadow 0.3s ease-in-out;
+
+  &:hover {
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.3);
+  }
+
+  &--light {
+    border: 1px solid #ccc;
+    color: #ccc;
+
+    &:hover {
+      box-shadow: 0px 0px 10px 0px rgba(255, 255, 255, 0.3);
+    }
+  }
+}
