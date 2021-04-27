@@ -2,6 +2,7 @@ import classNames from "classnames";
 import Button from "components/@shared/button/Button.component";
 import Modal from "components/@shared/modal/Modal.component";
 import Tooltip from "components/@shared/tooltip/Tooltip.component";
+import Combat from "components/combat/Combat.component";
 import useKeyPress from "hooks/useKeyPress";
 import React, { useEffect } from "react";
 import { useMemo } from "react";
@@ -35,7 +36,7 @@ export const ElementsDetails: React.FC<{
   player?: Player;
   light?: boolean;
 }> = ({ elements, player, light = true }) => {
-  const [encounterOpen, setEncounterModal] = useState(false);
+  const [encounter, setEncounter] = useState<MapCoordinateElement>();
   const elementsWithQtd = useMemo(() => {
     const uniqueElements = getUniqueElements(elements);
     return player
@@ -65,14 +66,22 @@ export const ElementsDetails: React.FC<{
           {(element as MapCoordinateElement).actionQuote && (
             <Button
               light={light}
-              onClick={() => setEncounterModal(!encounterOpen)}
+              onClick={() => setEncounter(element as MapCoordinateElement)}
             >
               {(element as MapCoordinateElement).actionQuote}
             </Button>
           )}
         </div>
       ))}
-      {encounterOpen && <Modal>Modal</Modal>}
+      {encounter && (
+        <Modal closeLabel="Fugir" onClose={() => setEncounter(undefined)}>
+          {encounter.type === MapCoordinateElementType.ENEMY ? (
+            <Combat />
+          ) : (
+            "Modal"
+          )}
+        </Modal>
+      )}
     </div>
   );
 };

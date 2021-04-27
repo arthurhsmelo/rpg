@@ -1,3 +1,6 @@
+@import "scss/mixins.scss";
+@import "scss/variables.scss";
+
 .Modal {
   position: fixed;
   height: 100vh;
@@ -10,12 +13,24 @@
   background: rgba(0, 0, 0, 0.8);
 
   &-container {
-    min-width: 250px;
-    min-height: 100px;
-    background: #333;
+    position: relative;
+    background: #eaeaea;
     border-radius: 4px;
     padding: 8px;
-    border: 4px double #ccc;
-    color: #ccc;
+    border: 4px double #333;
+    color: #333;
+  }
+
+  &-close {
+    position: absolute;
+    right: -4px;
+    top: -45px;
+    background: #eaeaea;
+    padding: 2px;
+    border-radius: 4px;
+
+    .Button {
+      margin: 0;
+    }
   }
 }

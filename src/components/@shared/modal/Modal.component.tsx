@@ -1,11 +1,19 @@
 import React, { PropsWithChildren, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import Button from "../button/Button.component";
 import "./Modal.scss";
 
 const modalRoot = document.getElementById("modal") as HTMLElement;
-export interface ModalProps {}
+export interface ModalProps {
+  closeLabel?: string;
+  onClose?: () => void;
+}
 
-const Modal: React.FC<PropsWithChildren<ModalProps>> = ({ children }) => {
+const Modal: React.FC<PropsWithChildren<ModalProps>> = ({
+  children,
+  closeLabel,
+  onClose,
+}) => {
   const [element] = useState<HTMLDivElement>(document.createElement("div"));
 
   useEffect(() => {
@@ -18,7 +26,14 @@ const Modal: React.FC<PropsWithChildren<ModalProps>> = ({ children }) => {
   }, [element]);
 
   return createPortal(
-    <div className="Modal-container">{children}</div>,
+    <div className="Modal-container">
+      {closeLabel && (
+        <div className="Modal-close">
+          <Button onClick={onClose}>{closeLabel}</Button>
+        </div>
+      )}
+      {children}
+    </div>,
     element
   );
 };

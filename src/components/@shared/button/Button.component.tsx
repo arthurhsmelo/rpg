@@ -15,7 +15,11 @@ const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
   return (
     <button
       {...props}
-      className={classNames("Button", { "Button--light": light })}
+      className={classNames(
+        "Button",
+        { "Button--light": light },
+        props.className
+      )}
     >
       {children}
     </button>
