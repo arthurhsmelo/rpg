@@ -86,6 +86,46 @@ export const ElementsDetails: React.FC<{
   );
 };
 
+const _MapPosition: React.FC<any> = ({
+  visible,
+  halfVisible,
+  thirdVisible,
+  elements,
+  isWall,
+  hasWallToTheLeft,
+  hasWallToTheRight,
+  hasWallToTheTop,
+  hasWallToTheBottom,
+}) => {
+  return (
+    <div
+      className={classNames("Map-position", {
+        "Map-position--visible": visible,
+        "Map-position--halfVisible": halfVisible,
+        "Map-position--thirdVisible": thirdVisible,
+        "Map-wall": isWall,
+        "Map-wall--left": hasWallToTheLeft,
+        "Map-wall--right": hasWallToTheRight,
+        "Map-wall--top": hasWallToTheTop,
+        "Map-wall--bottom": hasWallToTheBottom,
+      })}
+    >
+      {elements}
+    </div>
+  );
+};
+
+function mapPositionPropsAreEqual(prevMovie: any, nextMovie: any) {
+  return (
+    prevMovie.visible === nextMovie.visible &&
+    prevMovie.halfVisible === nextMovie.halfVisible &&
+    prevMovie.thirdVisible === nextMovie.thirdVisible
+    /* prevMovie.elements === nextMovie.elements */
+  );
+}
+
+const MapPosition = React.memo(_MapPosition, mapPositionPropsAreEqual);
+
 const Map: React.FC<MapProps> = ({ label, player, onPlayerMove }) => {
   const [playerPosition, setPlayerPosition] = useState(MAP_CENTER);
   const [moveTimeout, setMoveTimeout] = useState<number>(-1);
@@ -238,34 +278,50 @@ const Map: React.FC<MapProps> = ({ label, player, onPlayerMove }) => {
   return (
     <div className="Map">
       <span className="Map-label">{label}</span>
-      {MAP_POSITIONS.map((key) => (
-        <div
-          key={key}
-          className={classNames("Map-position", {
-            "Map-position--visible": isEqualCoord(
-              COORDINATES[key],
-              playerPosition
-            ),
-            "Map-position--halfVisible": isEqualCoord(
-              COORDINATES[key],
-              playerPosition,
-              1
-            ),
-            "Map-position--thirdVisible": isEqualCoord(
-              COORDINATES[key],
-              playerPosition,
-              2
-            ),
-            "Map-wall": COORDINATES[key].isWall,
-            "Map-wall--left": hasWallToThe("left", COORDINATES[key]),
-            "Map-wall--right": hasWallToThe("right", COORDINATES[key]),
-            "Map-wall--top": hasWallToThe("top", COORDINATES[key]),
-            "Map-wall--bottom": hasWallToThe("bottom", COORDINATES[key]),
-          })}
-        >
-          {renderElements(COORDINATES[key])}
-        </div>
-      ))}
+      {MAP_POSITIONS.map((key) => {
+        return (
+          <MapPosition
+            key={key}
+            visible={isEqualCoord(COORDINATES[key], playerPosition)}
+            halfVisible={isEqualCoord(COORDINATES[key], playerPosition, 1)}
+            thirdVisible={isEqualCoord(COORDINATES[key], playerPosition, 2)}
+            isWall={COORDINATES[key].isWall}
+            hasWallToTheLeft={hasWallToThe("left", COORDINATES[key])}
+            hasWallToTheRight={hasWallToThe("right", COORDINATES[key])}
+            hasWallToTheTop={hasWallToThe("top", COORDINATES[key])}
+            hasWallToTheBottom={hasWallToThe("bottom", COORDINATES[key])}
+            elements={renderElements(COORDINATES[key])}
+          />
+        );
+        /* return (
+          <div
+            key={key}
+            className={classNames("Map-position", {
+              "Map-position--visible": isEqualCoord(
+                COORDINATES[key],
+                playerPosition
+              ),
+              "Map-position--halfVisible": isEqualCoord(
+                COORDINATES[key],
+                playerPosition,
+                1
+              ),
+              "Map-position--thirdVisible": isEqualCoord(
+                COORDINATES[key],
+                playerPosition,
+                2
+              ),
+              "Map-wall": COORDINATES[key].isWall,
+              "Map-wall--left": hasWallToThe("left", COORDINATES[key]),
+              "Map-wall--right": hasWallToThe("right", COORDINATES[key]),
+              "Map-wall--top": hasWallToThe("top", COORDINATES[key]),
+              "Map-wall--bottom": hasWallToThe("bottom", COORDINATES[key]),
+            })}
+          >
+            {renderElements(COORDINATES[key])}
+          </div>
+        ); */
+      })}
     </div>
   );
 };
